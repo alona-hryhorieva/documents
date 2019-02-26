@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<databaseChangeLog xmlns='http://www.liquibase.org/xml/ns/dbchangelog'
+                   xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+                   xsi:schemaLocation='http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd'>
+
+    <changeSet id="1" author="hryhorieva">
+        <createTable tableName="users">
+            <column name="id" type="int"></column>
+            <column name="login" type="varchar(100)"></column>
+            <column name="password" type="varchar(100)"></column>
+            <column name="enabled" type="tinyint"></column>
+        </createTable>
+        <addPrimaryKey tableName="users" columnNames="id"/>
+        <addAutoIncrement tableName="users" columnName="id" columnDataType="int"/>
+        <addNotNullConstraint tableName="users" columnName="login" columnDataType="varchar(100)"/>
+        <addNotNullConstraint tableName="users" columnName="password" columnDataType="varchar(100)"/>
+        <addNotNullConstraint tableName="users" columnName="enabled" columnDataType="tinyint"/>
+        <addDefaultValue tableName="users" columnName="enabled" columnDataType="int" defaultValueNumeric="1"/>
+        <!--<sql>ALTER TABLE users CONVERT TO CHARACTER SET utf8_unicode_ci;</sql>-->
+    </changeSet>
+
+    <changeSet id="2" author="hryhorieva">
+        <createTable tableName="documents">
+            <column name="id" type="int" autoIncrement="1"></column>
+            <column name="name" type="varchar(100)"></column>
+            <column name="date" type="timestamp"></column>
+            <column name="file" type="longblob"></column>
+            <column name="type" type="varchar(20)"></column>
+            <column name="user" type="int"></column>
+        </createTable>
+        <addPrimaryKey tableName="documents" columnNames="id"/>
+        <addForeignKeyConstraint baseTableName="documents" baseColumnNames="user" referencedTableName="users"
+                                 referencedColumnNames="id" constraintName="fk_documents_user"/>
+        <addAutoIncrement tableName="documents" columnName="id" columnDataType="int"/>
+        <addNotNullConstraint tableName="documents" columnName="name" columnDataType="varchar(100)"/>
+        <addNotNullConstraint tableName="documents" columnName="date" columnDataType="timestamp"/>
+        <addNotNullConstraint tableName="documents" columnName="file" columnDataType="longblob"/>
+        <addNotNullConstraint tableName="documents" columnName="type" columnDataType="varchar(20)"/>
+        <addNotNullConstraint tableName="documents" columnName="user" columnDataType="int"/>
+    </changeSet>
+
+    <changeSet id="3" author="hryhorieva">
+        <createTable tableName="roles">
+            <column name="id" type="int"></column>
+            <column name="role" type="varchar(50)"></column>
+        </createTable>
+        <addPrimaryKey tableName="roles" columnNames="id"/>
+        <addAutoIncrement tableName="roles" columnName="id" columnDataType="int"/>
+        <addNotNullConstraint tableName="roles" columnName="role" columnDataType="varchar(50)"/>
+    </changeSet>
+
+    <changeSet id="4" author="hryhorieva">
+        <createTable tableName="user_roles">
+            <column name="id" type="int"></column>
+            <column name="user_id" type="int"></column>
+            <column name="role_id" type="int"></column>
+        </createTable>
+        <addPrimaryKey tableName="user_roles" columnNames="id"/>
+        <addForeignKeyConstraint baseTableName="user_roles" baseColumnNames="user_id" constraintName="fk_user_roles_user" referencedTableName="users"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="user_roles" baseColumnNames="role_id" constraintName="fk_user_roles_role" referencedTableName="roles"
+                                 referencedColumnNames="id"/>
+        <addAutoIncrement tableName="user_roles" columnName="id" columnDataType="int"/>
+        <addNotNullConstraint tableName="user_roles" columnName="user_id" columnDataType="int"/>
+        <addNotNullConstraint tableName="user_roles" columnName="role_id" columnDataType="int"/>
+    </changeSet>
+
+    <changeSet id="5" author="hryhorieva">
+        <insert tableName="users">
+            <column name="login" type="varchar(100)" value="admin"></column>
+            <column name="password" type="varchar(100)" value="$2a$10$GqYSwUIS/SkP21NYULH9XOnaBtrUUNg4VmkXrdomIiAf1uWpmqSe6"></column>
+            <column name="enabled" type="tinyint" value="1"></column>
+        </insert>
+        <insert tableName="users">
+            <column name="login" type="varchar(100)" value="user"></column>
+            <column name="password" type="varchar(100)" value="$2a$10$jstAlZs4wGDil8jqUtaYwuKWsv5H/t/uwlWG6SW2hgyLBGIbFbii2"></column>
+            <column name="enabled" type="tinyint" value="1"></column>
+        </insert>
+        <insert tableName="roles">
+            <column name="role" type="varchar(50)" value="ROLE_ADMIN"></column>
+        </insert>
+        <insert tableName="roles">
+            <column name="role" type="varchar(50)" value="ROLE_USER"></column>
+        </insert>
+        <insert tableName="user_roles">
+            <column name="user_id" type="int" value="1"></column>
+            <column name="role_id" type="int" value="1"></column>
+        </insert>
+        <insert tableName="user_roles">
+            <column name="user_id" type="int" value="2"></column>
+            <column name="role_id" type="int" value="2"></column>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
