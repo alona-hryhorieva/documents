@@ -29,4 +29,16 @@
     </sec:authorize>
   </div>
 </div>
+<div>
+<form method="POST" action="/test">
+<div class="container text-center">
+<div class="row align-items-top">
+<div class="col-md-4 col-sm-6 col-12">
+            <input path="test" type="checkbox"/> test <br>
+            <input type="submit" class="button" value="send">
+            </div>
+</div>
+</div>
+</form>
+</div>
 <jsp:include page="../templates/footer.jsp" ></jsp:include>
