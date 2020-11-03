@@ -14,8 +14,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -58,6 +60,17 @@ public class UserController {
         System.out.println(user);
         userServiceImpl.userRegistration(user);
         authenticateUserAndSetSession(user, req);
+        return "redirect:/";
+    }
+
+    @RequestMapping(value = "test", method = RequestMethod.POST)
+    public String test(@ModelAttribute("test") String test,
+                                  BindingResult result,
+                                  HttpServletRequest req,
+                                  Model model) {
+        System.out.println("=====================================");
+
+        System.out.println(test);
         return "redirect:/";
     }
 
